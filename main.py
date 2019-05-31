@@ -29,26 +29,15 @@ class App(QFrame):
         self.layout.setSpacing(0)
         self.layout.setContentsMargins(0, 0, 0, 0)
 
-        self.hlaouyt = QHBoxLayout()
-        self.hlaouyt.addStretch(0)
-
-        # create 'About/Close buttons
-        self.aboutbutton = QPushButton("About")
-        self.closebutton = QPushButton("Close")
-        self.hlaouyt.addWidget(self.aboutbutton)
-        self.hlaouyt.addWidget(self.closebutton)
-
-        self.closebutton.clicked.connect(self.closeApp)
         # TODO: define 'About' Window
-        # TODO: first create laouyt, than connect all buttons
 
         self.tabbar = QTabBar(movable=True, tabsClosable=True)
-        self.tabbar.tabCloseRequested.connect(self.closeTab)
-
-        self.tabbar.addTab("Tab 1")
-        self.tabbar.addTab("Tab 2")
 
         self.tabbar.setCurrentIndex(0)
+
+        # Keep track of tabs
+        self.tabCounter = 0
+        self.tabs = []
 
         # Define Address Bar
         self.toolbar = QWidget()
@@ -58,16 +47,54 @@ class App(QFrame):
         self.toolbar.setLayout(self.toolbarLayout)
         self.toolbarLayout.addWidget(self.addressBar)
 
+        #Add new tab
+        self.addTabButton = QPushButton("+")
+
+        self.toolbarLayout.addWidget(self.addTabButton)
+
+        # Set main view
+        self.container = QWidget()
+        self.container.layout = QStackedLayout()
+        self.container.setLayout(self.container.layout)
+
         self.layout.addWidget(self.tabbar)
         self.layout.addWidget(self.toolbar)
-        self.layout.addLayout(self.hlaouyt)
+        self.layout.addWidget(self.container)
 
         self.setLayout(self.layout)
 
+        # Connecting buttons to methods:
+        self.tabbar.tabCloseRequested.connect(self.closeTab)
+        self.addTabButton.clicked.connect(self.addTab)
+
+        self.addTab()
+
         self.show()
 
-    def closeApp(self):
-        QApplication.exit(0)
+    def addTab(self):
+        i = self.tabCounter
+
+        self.tabs.append(QWidget())
+        self.tabs[i].layout = QVBoxLayout()
+        self.tabs[i].setObjectName("tab " + str(i))
+
+        # Open web view
+        self.tabs[i].content = QWebEngineView()
+        self.tabs[i].content.load(QUrl.fromUserInput("http://www.google.com"))
+
+        # Add web view to tabs layout
+        self.tabs[i].layout.addWidget(self.tabs[i].content)
+
+        # Set top level tab from [] to layout
+        self.tabs[i].setLayout(self.tabs[i].layout)
+
+        # Add tab to top level StackedWidget
+        self.container.layout.addWidget(self.tabs[i])
+        self.container.layout.setCurrentWidget(self.tabs[i])
+
+        self.tabbar.addTab("New Tab")
+        self.tabbar.setTabData(i, "Tab " + str(i))
+        self.tabbar.setCurrentIndex(i)
 
     def closeTab(self, i):
         self.tabbar.removeTab(i)
