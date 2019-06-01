@@ -67,6 +67,7 @@ class App(QFrame):
         # Connecting buttons to methods:
         self.tabbar.tabCloseRequested.connect(self.closeTab)
         self.addTabButton.clicked.connect(self.addTab)
+        self.tabbar.tabBarClicked.connect(self.SwitchTab)
 
         self.addTab()
 
@@ -94,12 +95,21 @@ class App(QFrame):
         self.container.layout.setCurrentWidget(self.tabs[i])
 
         self.tabbar.addTab("New Tab")
-        self.tabbar.setTabData(i, "Tab " + str(i))
+        self.tabbar.setTabData(i, "tab " + str(i))
         self.tabbar.setCurrentIndex(i)
+
+        self.tabCounter += 1
+
+    def SwitchTab(self, i):
+        tab_data = self.tabbar.tabData(i)
+        print("tab", tab_data)
+
+        tab_content = self.findChild(QWidget, tab_data)
+        print(tab_content)
+        self.container.layout.setCurrentWidget(tab_content)
 
     def closeTab(self, i):
         self.tabbar.removeTab(i)
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
