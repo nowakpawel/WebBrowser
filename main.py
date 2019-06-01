@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout, QP
 
 from PyQt5.QtGui import QIcon, QWindow, QImage
 from PyQt5.QtCore import *
+from PyQt5.QtWebEngineWidgets import *
 
 
 class AddressBar(QLineEdit):
