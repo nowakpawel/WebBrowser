@@ -45,6 +45,8 @@ class App(QFrame):
         self.toolbarLayout = QHBoxLayout()
         self.addressBar = AddressBar()
 
+        self.addressBar.returnPressed.connect(self.BrowseTo)
+
         self.toolbar.setLayout(self.toolbarLayout)
         self.toolbarLayout.addWidget(self.addressBar)
 
@@ -107,6 +109,27 @@ class App(QFrame):
         tab_content = self.findChild(QWidget, tab_data)
         print(tab_content)
         self.container.layout.setCurrentWidget(tab_content)
+
+    def BrowseTo(self):
+        address = self.addressBar.text()
+
+        i = self.tabbar.currentIndex()
+        tab = self.tabbar.tabData(i)
+        wv = self.findChild(QWidget, tab).content
+
+        if "http" not in address:
+            if "." not in address:
+                url = "https://www.google.com/search?q=" + address
+            else:
+                url = "http://" + address
+        else:
+            url = address
+
+            # TODO: when url is clicked on page, get it and put to addressbar
+
+        wv.load(QUrl.fromUserInput(url))
+
+        self.addressBar.setText(url)
 
     def closeTab(self, i):
         self.tabbar.removeTab(i)
