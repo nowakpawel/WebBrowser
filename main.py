@@ -40,6 +40,7 @@ class App(QFrame):
 
         # Define Address Bar
         self.toolbar = QWidget()
+        self.toolbar.setObjectName("Toolbar")
         self.toolbarLayout = QHBoxLayout()
         self.addressBar = AddressBar()
         self.addTabButton = QPushButton("+")
@@ -115,12 +116,13 @@ class App(QFrame):
         self.tabCounter += 1
 
     def SwitchTab(self, i):
-        tab_data = self.tabbar.tabData(i)["object"]
-        tab_content = self.findChild(QWidget, tab_data)
-        self.container.layout.setCurrentWidget(tab_content)
+        if self.tabbar.tabData(i):
+            tab_data = self.tabbar.tabData(i)["object"]
+            tab_content = self.findChild(QWidget, tab_data)
+            self.container.layout.setCurrentWidget(tab_content)
 
-        new_url = tab_content.content.url().toString()
-        self.addressBar.setText(new_url)
+            new_url = tab_content.content.url().toString()
+            self.addressBar.setText(new_url)
 
     def BrowseTo(self):
         address = self.addressBar.text()
