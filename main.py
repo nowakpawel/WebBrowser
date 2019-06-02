@@ -79,13 +79,15 @@ class App(QFrame):
 
         self.tabs.append(QWidget())
         self.tabs[i].layout = QVBoxLayout()
+        self.tabs[i].layout.setContentsMargins(0, 0, 0, 0)
         self.tabs[i].setObjectName("tab" + str(i))
 
         # Open web view
         self.tabs[i].content = QWebEngineView()
         self.tabs[i].content.load(QUrl.fromUserInput("http://www.google.com"))
 
-        self.tabs[i].content.titleChanged.connect(lambda: self.setTabText(i))
+        self.tabs[i].content.titleChanged.connect(lambda: self.setTabContent(i, "title"))
+        self.tabs[i].content.iconChanged.connect(lambda: self.setTabContent(i, "icon"))
 
         # Add web view to tabs layout
         self.tabs[i].layout.addWidget(self.tabs[i].content)
@@ -133,7 +135,7 @@ class App(QFrame):
 
         self.addressBar.setText(url)
 
-    def setTabText(self, i):
+    def setTabContent(self, i, type):
         tab_name = self.tabs[i].objectName()
 
         print(tab_name)
@@ -148,8 +150,12 @@ class App(QFrame):
                 running = False
 
             if tab_name == tab_data_name["object"]:
-                newTitle = self.findChild(QWidget, tab_name).content.title()
-                self.tabbar.setTabText(count, newTitle)
+                if type == "title":
+                    newTitle = self.findChild(QWidget, tab_name).content.title()
+                    self.tabbar.setTabText(count, newTitle)
+                elif type == "icon":
+                    newIcon = self.findChild(QWidget, tab_name).content.icon()
+                    self.tabbar.setTabIcon(count, newIcon)
                 running = False
             else:
                 count += 1
