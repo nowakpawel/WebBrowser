@@ -201,10 +201,15 @@ class App(QFrame):
 
     def closeTab(self, i):
         self.tabbar.removeTab(i)
+        self.tabCounter -= 1
+
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = App()
+
+    with open("style.css", "r") as style:
+        app.setStyleSheet(style.read())
 
     sys.exit(app.exec_())
