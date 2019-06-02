@@ -168,10 +168,28 @@ class App(QFrame):
                 count += 1
 
     def GoBack(self):
-        pass
+        activeIndex = self.tabbar.currentIndex()
+
+        tab_name = self.tabbar.tabData(activeIndex)["object"]
+        tab_content = self.findChild(QWidget, tab_name).content
+
+        tab_content.back()
 
     def GoForward(self):
-        pass
+        activeIndex = self.tabbar.currentIndex()
+
+        tab_name = self.tabbar.tabData(activeIndex)["object"]
+        tab_content = self.findChild(QWidget, tab_name).content
+
+        tab_content.forward()
+
+    def reloadPage(self):
+        activeIndex = self.tabbar.currentIndex()
+
+        tab_name = self.tabbar.tabData(activeIndex)["object"]
+        tab_content = self.findChild(QWidget, tab_name).content
+
+        tab_content.reload()
 
     def closeTab(self, i):
         self.tabbar.removeTab(i)
