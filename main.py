@@ -22,15 +22,13 @@ class App(QFrame):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Python Simple Web Browser")
-        self.setBaseSize(1366, 768)
+        self.setMinimumSize(1366, 768)
         self.createApp()
 
     def createApp(self):
         self.layout = QVBoxLayout()
         self.layout.setSpacing(0)
         self.layout.setContentsMargins(0, 0, 0, 0)
-
-        # TODO: define 'About' Window
 
         self.tabbar = QTabBar(movable=True, tabsClosable=True)
 
