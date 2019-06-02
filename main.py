@@ -42,15 +42,16 @@ class App(QFrame):
         self.toolbar = QWidget()
         self.toolbarLayout = QHBoxLayout()
         self.addressBar = AddressBar()
-
-        self.addressBar.returnPressed.connect(self.BrowseTo)
-
-        self.toolbar.setLayout(self.toolbarLayout)
-        self.toolbarLayout.addWidget(self.addressBar)
-
-        #Add new tab
         self.addTabButton = QPushButton("+")
 
+        # Set toolbar buttons
+        self.BackButton = QPushButton("<=")
+        self.ForwardButton = QPushButton("=>")
+
+        self.toolbar.setLayout(self.toolbarLayout)
+        self.toolbarLayout.addWidget(self.BackButton)
+        self.toolbarLayout.addWidget(self.ForwardButton)
+        self.toolbarLayout.addWidget(self.addressBar)
         self.toolbarLayout.addWidget(self.addTabButton)
 
         # Set main view
@@ -58,8 +59,8 @@ class App(QFrame):
         self.container.layout = QStackedLayout()
         self.container.setLayout(self.container.layout)
 
-        self.layout.addWidget(self.tabbar)
         self.layout.addWidget(self.toolbar)
+        self.layout.addWidget(self.tabbar)
         self.layout.addWidget(self.container)
 
         self.setLayout(self.layout)
@@ -68,6 +69,9 @@ class App(QFrame):
         self.tabbar.tabCloseRequested.connect(self.closeTab)
         self.addTabButton.clicked.connect(self.addTab)
         self.tabbar.tabBarClicked.connect(self.SwitchTab)
+        self.addressBar.returnPressed.connect(self.BrowseTo)
+        self.BackButton.clicked.connect(self.GoBack)
+        self.ForwardButton.clicked.connect(self.GoForward)
 
         self.addTab()
 
