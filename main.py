@@ -47,10 +47,12 @@ class App(QFrame):
         # Set toolbar buttons
         self.BackButton = QPushButton("<=")
         self.ForwardButton = QPushButton("=>")
+        self.reloadButton = QPushButton("⟳")
 
         self.toolbar.setLayout(self.toolbarLayout)
         self.toolbarLayout.addWidget(self.BackButton)
         self.toolbarLayout.addWidget(self.ForwardButton)
+        self.toolbarLayout.addWidget(self.reloadButton)
         self.toolbarLayout.addWidget(self.addressBar)
         self.toolbarLayout.addWidget(self.addTabButton)
 
@@ -72,6 +74,7 @@ class App(QFrame):
         self.addressBar.returnPressed.connect(self.BrowseTo)
         self.BackButton.clicked.connect(self.GoBack)
         self.ForwardButton.clicked.connect(self.GoForward)
+        self.reloadButton.clicked.connect(self.reloadPage)
 
         self.addTab()
 
