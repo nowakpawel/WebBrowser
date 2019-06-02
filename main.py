@@ -164,6 +164,12 @@ class App(QFrame):
             else:
                 count += 1
 
+    def GoBack(self):
+        pass
+
+    def GoForward(self):
+        pass
+
     def closeTab(self, i):
         self.tabbar.removeTab(i)
 
