@@ -109,7 +109,7 @@ class App(QFrame):
         tab_data = self.tabbar.tabData(i)
         print("tab", tab_data)
 
-        tab_content = self.findChild(QWidget, tab_data)
+        tab_content = self.findChild(QWidget, tab_data["object"])
         print(tab_content)
         self.container.layout.setCurrentWidget(tab_content)
 
