@@ -95,6 +95,7 @@ class App(QFrame):
 
         self.tabs[i].content.titleChanged.connect(lambda: self.setTabContent(i, "title"))
         self.tabs[i].content.iconChanged.connect(lambda: self.setTabContent(i, "icon"))
+        self.tabs[i].content.iconChanged.connect(lambda: self.setTabContent(i, "url"))
 
         # Add web view to tabs layout
         self.tabs[i].layout.addWidget(self.tabs[i].content)
@@ -114,12 +115,12 @@ class App(QFrame):
         self.tabCounter += 1
 
     def SwitchTab(self, i):
-        tab_data = self.tabbar.tabData(i)
-        print("tab", tab_data)
-
-        tab_content = self.findChild(QWidget, tab_data["object"])
-        print(tab_content)
+        tab_data = self.tabbar.tabData(i)["object"]
+        tab_content = self.findChild(QWidget, tab_data)
         self.container.layout.setCurrentWidget(tab_content)
+
+        new_url = tab_content.content.url().toString()
+        self.addressBar.setText(new_url)
 
     def BrowseTo(self):
         address = self.addressBar.text()
@@ -145,10 +146,15 @@ class App(QFrame):
     def setTabContent(self, i, type):
         tab_name = self.tabs[i].objectName()
 
-        print(tab_name)
-
         count = 0
         running = True
+
+        current_tab = self.tabbar.tabData(self.tabbar.currentIndex())["object"]
+
+        if current_tab == tab_name and type == "url":
+            new_url = self.findChild(QWidget, tab_name).content.url().toString()
+            self.addressBar.setText(new_url)
+            return False
 
         while running:
             tab_data_name = self.tabbar.tabData(count)
