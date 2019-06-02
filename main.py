@@ -76,6 +76,7 @@ class App(QFrame):
         self.show()
 
     def addTab(self):
+        self.addressBar.setText("")
         i = self.tabCounter
 
         self.tabs.append(QWidget())
